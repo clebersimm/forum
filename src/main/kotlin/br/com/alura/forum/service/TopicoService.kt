@@ -41,15 +41,24 @@ class TopicoService(
         val t = topicos.stream().filter { t ->
             t.id == form.id
         }.findFirst().get()
-        topicos = topicos.minus(t).plus(Topico(
-            id = form.id,
-            titulo = form.titulo,
-            mensagem = form.mensagem,
-            usuario = t.usuario,
-            curso = t.curso,
-            respostas = t.respostas,
-            status = t.status,
-            dataCriacao = t.dataCriacao
-        ))
+        topicos = topicos.minus(t).plus(
+            Topico(
+                id = form.id,
+                titulo = form.titulo,
+                mensagem = form.mensagem,
+                usuario = t.usuario,
+                curso = t.curso,
+                respostas = t.respostas,
+                status = t.status,
+                dataCriacao = t.dataCriacao
+            )
+        )
+    }
+
+    fun deletar(id: Long) {
+        val t = topicos.stream().filter { t ->
+            t.id == id
+        }.findFirst().get()
+        topicos = topicos.minus(t)
     }
 }
