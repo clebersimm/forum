@@ -1,5 +1,6 @@
 package br.com.alura.forum.service
 
+import br.com.alura.forum.dto.AtualizacaoTopicoForm
 import br.com.alura.forum.dto.NovoTopicoForm
 import br.com.alura.forum.dto.TopicoView
 import br.com.alura.forum.mapper.TopicoFormMapper
@@ -36,4 +37,19 @@ class TopicoService(
         topicos = topicos.plus(topico)
     }
 
+    fun atualizar(form: AtualizacaoTopicoForm) {
+        val t = topicos.stream().filter { t ->
+            t.id == form.id
+        }.findFirst().get()
+        topicos = topicos.minus(t).plus(Topico(
+            id = form.id,
+            titulo = form.titulo,
+            mensagem = form.mensagem,
+            usuario = t.usuario,
+            curso = t.curso,
+            respostas = t.respostas,
+            status = t.status,
+            dataCriacao = t.dataCriacao
+        ))
+    }
 }
