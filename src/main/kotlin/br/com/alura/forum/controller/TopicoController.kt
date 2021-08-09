@@ -10,14 +10,21 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import javax.validation.Valid
 import javax.transaction.Transactional
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Page
+import org.springframework.data.web.PageableDefault
+import org.springframework.data.domain.Sort
 
 @RestController
 @RequestMapping("/topicos")
 class TopicoController(private val service: TopicoService) {
 
 	@GetMapping
-	fun listar(): List<TopicoView> {
-		return service.listar()
+	fun listar(
+		@RequestParam(required = false) nomeCurso: String?,
+		@PageableDefault(size = 5, sort = ["dataCriacao"], direction = Sort.Direction.DESC) paginacao: Pageable
+	): Page<TopicoView> {
+		return service.listar(nomeCurso, paginacao)
 	}
 
 	@GetMapping("/{id}")

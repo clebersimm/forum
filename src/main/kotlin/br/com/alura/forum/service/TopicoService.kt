@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 import br.com.alura.forum.repository.TopicoRepository
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Page
 
 @Service
 class TopicoService(
@@ -20,10 +22,18 @@ class TopicoService(
 	private val notFoundMessage: String = "Topico não encontrado"
 ) {
 
-	fun listar(): List<TopicoView> {
-		return repository.findAll().stream().map { t ->
+	fun listar(
+		nomeCurso: String?,
+		paginacao: Pageable
+	): Page<TopicoView> {
+		val topicos = if (nomeCurso == null) {
+			repository.findAll(paginacao)
+		} else {
+			repository.findByCursoByNome(nomeCurso, paginacao)
+		}
+		return topicos.map { t ->
 			topicoViewMapper.map(t)
-		}.collect(Collectors.toList())
+		}
 	}
 
 	fun buscarPorId(id: Long): TopicoView {
