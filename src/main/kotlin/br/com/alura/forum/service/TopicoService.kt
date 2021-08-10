@@ -13,6 +13,7 @@ import kotlin.collections.ArrayList
 import br.com.alura.forum.repository.TopicoRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Page
+import br.com.alura.forum.dto.TopicoPorCategoriaDTO
 
 @Service
 class TopicoService(
@@ -56,5 +57,9 @@ class TopicoService(
 
 	fun deletar(id: Long) {
 		repository.deleteById(id)
+	}
+
+	fun relatorio(): List<TopicoPorCategoriaDTO> {
+		return repository.relatorio()
 	}
 }
